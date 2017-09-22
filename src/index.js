@@ -1,23 +1,16 @@
 module.exports = function check(str, bracketsConfig) {
-    var arr = [],
-        len = str.length,
-        count = 0;
-
-    
-
-    for (var i = 0; i < len; i++) {
-        for (var j = 0; j < bracketsConfig.length; j++) {
-            if (str.charAt(i) === bracketsConfig[j][0]) {
-                arr.push(str.charAt(i));
-            }
-            if (str.charAt(i) === bracketsConfig[j][1]) {
-                if (arr[arr.length - 1] === bracketsConfig[j][0]) {
-                    arr.pop();
-                }
-            }
-            console.log(arr)
+    if (!str) {
+        return true;
+    }
+    for (let i = 0; i < str.length - 1; i++) {
+        let j = bracketsConfig.find(config => config[0] === str[i]);
+        if (!j) {
+            return false;
+        }
+        if (str[i + 1] === j[1]) {
+            str = str.replace(j.join(''), '');
+            return check(str, bracketsConfig);
         }
     }
-    if (arr.length === 0) return true;
     return false;
-}
+};
